@@ -20,7 +20,7 @@ public record ReservationRequest(
     public Reservation toModel(long concertId) {
         return Reservation.builder()
             .concertId(concertId)
-            .status(ReservationStatus.PENDING)
+            .status(ReservationStatus.HOLDING)
             .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
             .userId(userId)
             .seatIds(seatIds)

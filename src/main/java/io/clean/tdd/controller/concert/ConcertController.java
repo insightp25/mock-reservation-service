@@ -1,5 +1,7 @@
 package io.clean.tdd.controller.concert;
 
+import io.clean.tdd.controller.concert.annotation.CurrentReservationAccess;
+import io.clean.tdd.controller.concert.annotation.ReservationAccessCheck;
 import io.clean.tdd.controller.concert.request.PaymentRequest;
 import io.clean.tdd.controller.concert.request.ReservationRequest;
 import io.clean.tdd.domain.concert.*;
@@ -28,8 +30,10 @@ public class ConcertController {
             .body(concertService.searchByConcertDetailId(concertDetailId));
     }
 
+    @ReservationAccessCheck
     @GetMapping("/concerts/{id}")
     public ResponseEntity<List<Seat>> reservedSeats(
+        @CurrentReservationAccess String accessId,
         @PathVariable("id") long id
     ) {
         return ResponseEntity
@@ -37,8 +41,10 @@ public class ConcertController {
             .body(concertService.searchReservedSeatsByConcertId(id));
     }
 
+    @ReservationAccessCheck
     @PostMapping("/concerts/{id}/reservation")
     public ResponseEntity<Reservation> reservation(
+        @CurrentReservationAccess String accessId,
         @PathVariable("id") long id,
         @RequestBody ReservationRequest reservationRequest
         ) {
@@ -47,8 +53,10 @@ public class ConcertController {
             .body(concertService.reserveSeats(reservationRequest.toModel(id)));
     }
 
+    @ReservationAccessCheck
     @PostMapping("reservations/{id}/payment")
     public ResponseEntity<Payment> payment(
+        @CurrentReservationAccess String accessId,
         @PathVariable("id") long reservationId,
         @RequestBody PaymentRequest paymentRequest
         ) {

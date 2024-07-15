@@ -1,5 +1,5 @@
 package io.clean.tdd.domain.concert.model;
 
 public enum SeatStatus {
-    AVAILABLE, RESERVED, OCCUPIED
+    AVAILABLE, ON_HOLD, OCCUPIED
 }
