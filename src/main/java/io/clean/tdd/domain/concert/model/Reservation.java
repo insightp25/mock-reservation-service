@@ -7,7 +7,7 @@ import java.util.List;
 
 public record Reservation(
     long id,
-    ReservationStatus status,
+    boolean isClosed,
     LocalDateTime createdAt,
     long userId,
     long concertId,

@@ -45,7 +45,7 @@ public class ConcertControllerTest {
     @Test
     void 특정_콘서트에_대해_예약_가능한_날짜_목록을_조회할_수_있다() throws Exception {
         // given
-        BDDMockito.given(concertService.searchByConcertDetailId(anyLong()))
+        BDDMockito.given(concertService.searchConcertsByConcertDetailId(anyLong()))
                 .willReturn(new ArrayList<>(Arrays.asList(Concert.builder().build())));
 
         // when & then
@@ -57,7 +57,7 @@ public class ConcertControllerTest {
     @Test
     void 대기열에서_사용자_상태가_활성_상태일시_특정_콘서트_상세정보_ID를_입력받아_해당_콘서트의_예약_가능한_좌석_목록을_조회할_수_있다() throws Exception {
         // given
-        BDDMockito.given(concertService.searchReservedSeatsByConcertId(anyLong()))
+        BDDMockito.given(concertService.searchSeatsByConcertId(anyLong()))
             .willReturn(new ArrayList<>(Arrays.asList(Seat.builder().build())));
 
         // when & then

@@ -27,7 +27,7 @@ public class ConcertController {
     ) {
         return ResponseEntity
             .ok()
-            .body(concertService.searchByConcertDetailId(concertDetailId));
+            .body(concertService.searchConcertsByConcertDetailId(concertDetailId));
     }
 
     @ReservationAccessCheck
@@ -38,7 +38,7 @@ public class ConcertController {
     ) {
         return ResponseEntity
             .ok()
-            .body(concertService.searchReservedSeatsByConcertId(id));
+            .body(concertService.searchSeatsByConcertId(id));
     }
 
     @ReservationAccessCheck
