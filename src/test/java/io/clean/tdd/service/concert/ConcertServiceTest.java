@@ -1,6 +1,7 @@
 package io.clean.tdd.service.concert;
 
 import io.clean.tdd.domain.concert.ConcertService;
+import io.clean.tdd.domain.concert.PointValidator;
 import io.clean.tdd.domain.concert.model.*;
 import io.clean.tdd.domain.concert.port.*;
 import org.assertj.core.api.Assertions;
@@ -63,6 +64,15 @@ public class ConcertServiceTest {
 
     @Mock
     private PaymentRepository paymentRepository;
+
+    @Mock
+    private UserPointRepository userPointRepository;
+
+    @Mock
+    private PointHistoryRepository pointHistoryRepository;
+
+    @Mock
+    private PointValidator pointValidator; // 이후 패키지 리팩토링(서비스와 같은 위계 부적절)
 
     @Test
     void 특정_콘서트에_대해_예약_가능한_날짜_목록을_조회할_수_있다() {
@@ -163,16 +173,16 @@ public class ConcertServiceTest {
         Reservation result = concertService.reserveSeats(reservation);
 
         // then
-        assertAll(() -> {
-            Assertions.assertThat(result.status()).isEqualTo(ReservationStatus.HOLDING);
-            Assertions.assertThat(result.seats()).hasSize(3);
-            Assertions.assertThat(result.seats().get(0).seatStatus()).isEqualTo(SeatStatus.ON_HOLD);
-            Assertions.assertThat(result.seats().get(1).seatStatus()).isEqualTo(SeatStatus.ON_HOLD);
-            Assertions.assertThat(result.seats().get(2).seatStatus()).isEqualTo(SeatStatus.ON_HOLD);
-            Assertions.assertThat(result.seats().get(0).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L);
-            Assertions.assertThat(result.seats().get(1).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L);
-            Assertions.assertThat(result.seats().get(2).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L);
-        });
+        assertAll(
+            () -> Assertions.assertThat(result.status()).isEqualTo(ReservationStatus.HOLDING),
+            () -> Assertions.assertThat(result.seats()).hasSize(3),
+            () -> Assertions.assertThat(result.seats().get(0).seatStatus()).isEqualTo(SeatStatus.ON_HOLD),
+            () -> Assertions.assertThat(result.seats().get(1).seatStatus()).isEqualTo(SeatStatus.ON_HOLD),
+            () -> Assertions.assertThat(result.seats().get(2).seatStatus()).isEqualTo(SeatStatus.ON_HOLD),
+            () -> Assertions.assertThat(result.seats().get(0).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L),
+            () -> Assertions.assertThat(result.seats().get(1).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L),
+            () -> Assertions.assertThat(result.seats().get(2).reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L)
+        );
     }
 
     @Test
@@ -240,6 +250,17 @@ public class ConcertServiceTest {
             .reservationId(reservation.id())
             .build();
 
+        UserPoint userPoint = UserPoint.builder()
+            .id(RANDOM_USER_ID_1L)
+            .point(1_000_000L)
+            .updatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+            .build();
+        UserPoint rebalancedUserPoint = UserPoint.builder()
+            .id(RANDOM_USER_ID_1L)
+            .point(300_000L)
+            .updatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+            .build();
+
         BDDMockito.given(reservationRepository.getById(anyLong()))
             .willReturn(reservation);
         BDDMockito.given(reservationRepository.update(any()))
@@ -257,6 +278,16 @@ public class ConcertServiceTest {
         BDDMockito.given(reservationAccessRepository.update(any()))
             .willReturn(reservationAccess.close());
 
+        BDDMockito.willDoNothing().given(pointValidator)
+            .validatePointGreaterThanZero(anyLong());
+        BDDMockito.given(userPointRepository.selectById(anyLong()))
+            .willReturn(userPoint);
+        BDDMockito.willDoNothing().given(pointValidator)
+            .validateSufficientPoints(anyLong(), any());
+        BDDMockito.given(userPointRepository.insertOrUpdate(any()))
+            .willReturn(rebalancedUserPoint);
+        BDDMockito.willDoNothing().given(pointHistoryRepository).insert(any());
+
         BDDMockito.given(paymentRepository.save(any()))
             .willReturn(payment);
 
@@ -264,9 +295,9 @@ public class ConcertServiceTest {
         Payment result = concertService.proceedPayment(payment);
 
         // then
-        assertAll(() -> {
-            Assertions.assertThat(result.reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L);
-            Assertions.assertThat(result.amount()).isEqualTo(600_000L);
-        });
+        assertAll(
+            () -> Assertions.assertThat(result.reservationId()).isEqualTo(RANDOM_RESERVATION_ID_1L),
+            () -> Assertions.assertThat(result.amount()).isEqualTo(600_000L)
+        );
     }
 }

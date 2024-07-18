@@ -6,8 +6,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -15,11 +13,14 @@ import java.util.List;
 public class ConcertService {
 
     private final ConcertRepository concertRepository;
-    private final ConcertDetailRepository concertDetailRepository;
+//    private final ConcertDetailRepository concertDetailRepository;
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
     private final ReservationAccessRepository reservationAccessRepository;
+    private final PointHistoryRepository pointHistoryRepository;
+    private final UserPointRepository userPointRepository;
+    private final PointValidator pointValidator; // 이후 패키지 리팩토링(서비스와 같은 위계 부적절)
 
     public List<Concert> searchConcertsByConcertDetailId(Long concertDetailId) {
 //        ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailId);
@@ -61,6 +62,16 @@ public class ConcertService {
         ReservationAccess reservationAccess = reservationAccessRepository.getByUserId(updatedReservation.userId());
         ReservationAccess closedReservedAccess = reservationAccessRepository.update(reservationAccess.close());
 
+        // user point
+        pointValidator.validatePointGreaterThanZero(updatedReservation.calculatePrice());
+        UserPoint userPoint = userPointRepository.selectById(updatedReservation.userId());
+        pointValidator.validateSufficientPoints(updatedReservation.calculatePrice(), userPoint);
+        userPointRepository.insertOrUpdate(userPoint.rebalanceForUse(updatedReservation.calculatePrice()));
+
+        // point history
+        pointHistoryRepository.insert(PointHistory.generatePointUseHistory(updatedReservation.userId(), updatedReservation.calculatePrice()));
+
+        // payment
         return paymentRepository.save(Payment.generatePayment(updatedReservation));
     }
 }
