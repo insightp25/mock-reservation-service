@@ -30,10 +30,10 @@ public class ConcertController {
             .body(concertService.searchConcertsByConcertDetailId(concertDetailId));
     }
 
-    @ReservationAccessCheck
+//    @ReservationAccessCheck
     @GetMapping("/concerts/{id}")
     public ResponseEntity<List<Seat>> reservedSeats(
-        @CurrentReservationAccess String accessId,
+//        @CurrentReservationAccess String accessId,
         @PathVariable("id") long id
     ) {
         return ResponseEntity
@@ -41,25 +41,25 @@ public class ConcertController {
             .body(concertService.searchSeatsByConcertId(id));
     }
 
-    @ReservationAccessCheck
-    @PostMapping("/concerts/{id}/reservation")
+//    @ReservationAccessCheck
+    @PostMapping("/concerts/{id}/reservation") // uri 및 id 제거 재고(필요 없어짐)
     public ResponseEntity<Reservation> reservation(
-        @CurrentReservationAccess String accessId,
-        @PathVariable("id") long id,
+//        @CurrentReservationAccess String accessId,
+        @PathVariable("id") long id, // 인자
         @RequestBody ReservationRequest reservationRequest
-        ) {
+    ) {
         return ResponseEntity
             .ok()
             .body(concertService.reserveSeats(reservationRequest.toModel(id)));
     }
 
-    @ReservationAccessCheck
+//    @ReservationAccessCheck
     @PostMapping("reservations/{id}/payment")
     public ResponseEntity<Payment> payment(
-        @CurrentReservationAccess String accessId,
+//        @CurrentReservationAccess String accessId,
         @PathVariable("id") long reservationId,
         @RequestBody PaymentRequest paymentRequest
-        ) {
+    ) {
         return ResponseEntity
             .ok()
             .body(concertService.proceedPayment(paymentRequest.toModel(reservationId)));

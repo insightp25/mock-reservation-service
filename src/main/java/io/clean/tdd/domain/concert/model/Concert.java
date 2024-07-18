@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 
 public record Concert(
     long id,
-    LocalDateTime heldAt,
+    LocalDateTime occasion,
+    String location,
     int seatCapacity,
-    int ticketPrice,
+    int reservedSeatCount,
     long concertDetailId
 ) {
     @Builder

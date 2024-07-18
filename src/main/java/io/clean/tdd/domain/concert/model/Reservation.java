@@ -7,13 +7,38 @@ import java.util.List;
 
 public record Reservation(
     long id,
-    boolean isClosed,
+    ReservationStatus status, // 재고
     LocalDateTime createdAt,
     long userId,
-    long concertId,
-    List<Long> seatIds
+    List<Seat> seats
 ) {
     @Builder
     public Reservation {
+    }
+
+    public long calculatePrice() {
+        return seats.stream()
+            .mapToLong(seat -> seat.seatOption().price())
+            .sum();
+    }
+
+    public Reservation toHoldingStatus() {
+        return Reservation.builder()
+            .id(id)
+            .status(ReservationStatus.HOLDING)
+            .createdAt(createdAt)
+            .userId(userId)
+            .seats(Seat.listToHoldingStatus(seats, id))
+            .build();
+    }
+
+    public Reservation toCompleteStatus() {
+        return Reservation.builder()
+            .id(id)
+            .status(ReservationStatus.COMPLETE)
+            .createdAt(createdAt)
+            .userId(userId)
+            .seats(Seat.listToOccupiedStatus(seats, id))
+            .build();
     }
 }

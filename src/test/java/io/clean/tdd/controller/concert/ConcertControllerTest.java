@@ -77,7 +77,7 @@ public class ConcertControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ReservationRequest.builder()
                     .userId(RANDOM_ID_999L)
-                    .seatIds(new ArrayList<>(Arrays.asList(RANDOM_ID_999L)))
+                    .seats(new ArrayList<>(Arrays.asList(Seat.builder().build())))
                     .build())))
             .andDo(print())
             .andExpect(status().isOk());

@@ -6,8 +6,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -22,40 +22,45 @@ public class ConcertService {
     private final ReservationAccessRepository reservationAccessRepository;
 
     public List<Concert> searchConcertsByConcertDetailId(Long concertDetailId) {
-        ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailId);
-        List<Concert> concerts = concertRepository.findByConcertDetailId(concertDetailId);
-        return new ArrayList<>(Arrays.asList());
+//        ConcertDetail concertDetail = concertDetailRepository.findById(concertDetailId);
+        return concertRepository.findByConcertDetailId(concertDetailId);
     }
 
     public List<Seat> searchSeatsByConcertId(long concertId) {
-        List<Seat> seats = seatRepository.findByConcertId(concertId);
-        return new ArrayList<>(Arrays.asList());
+        return seatRepository.findByConcertId(concertId);
     }
 
     @Transactional
     public Reservation reserveSeats(Reservation reservation) {
-        // isReserved: false -> true
-        Seat updatedSeat = seatRepository.update(Seat.builder().build());
+        // reservation status: VOID -> HOLDING
+        // seats status: VOID -> ON_HOLD
+        // 재고: seats의 상태도 함께 업데이트 되었는데, jpa에서 어떻게 처리하냐(1:N)에 따라 아래 seatRepository.update()가 중복이 될 수도
+        Reservation resultReservation = reservationRepository.save(reservation.toHoldingStatus());
 
-        Reservation savedReservation = reservationRepository.save(reservation);
 
-        return Reservation.builder().build();
+        resultReservation.seats().stream()
+            .forEach(seatRepository::update);
+
+        return resultReservation;
     }
 
     @Transactional
     public Payment proceedPayment(Payment payment) {
-        Payment paymentRecord = paymentRepository.save(payment);
-
-        // isClosed: false -> true
-        Reservation reservation = reservationRepository.getById(payment.reservationId());
-        Reservation updatedReservation = reservationRepository.update(Reservation.builder()
-            .isClosed(true)
-            .build());
-
+        // reservation
         // HOLDING -> EXPIRED
-        ReservationAccess reservationAccess = reservationAccessRepository.getByUserId(reservation.userId());
+        Reservation reservation = reservationRepository.getById(payment.reservationId());
+        Reservation updatedReservation = reservationRepository.update(reservation.toCompleteStatus());
+
+        // seat
+        // ON_HOLD -> OCCUPIED
+        updatedReservation.seats().stream()
+            .forEach(seatRepository::update);
+
+        // reservation access
+        // HOLDING -> EXPIRED
+        ReservationAccess reservationAccess = reservationAccessRepository.getByUserId(updatedReservation.userId());
         ReservationAccess closedReservedAccess = reservationAccessRepository.update(reservationAccess.close());
 
-        return Payment.builder().build();
+        return paymentRepository.save(Payment.generatePayment(updatedReservation));
     }
 }
