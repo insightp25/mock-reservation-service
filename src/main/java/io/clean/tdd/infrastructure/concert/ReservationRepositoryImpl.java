@@ -2,6 +2,7 @@ package io.clean.tdd.infrastructure.concert;
 
 import io.clean.tdd.domain.concert.model.Reservation;
 import io.clean.tdd.domain.concert.port.ReservationRepository;
+import io.clean.tdd.infrastructure.concert.entity.ReservationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

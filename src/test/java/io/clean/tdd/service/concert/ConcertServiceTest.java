@@ -1,9 +1,19 @@
 package io.clean.tdd.service.concert;
 
+import io.clean.tdd.domain.access.model.ReservationAccess;
+import io.clean.tdd.domain.access.model.ReservationAccessStatus;
 import io.clean.tdd.domain.concert.ConcertService;
-import io.clean.tdd.domain.concert.PointValidator;
+import io.clean.tdd.domain.payment.PointValidator;
 import io.clean.tdd.domain.concert.model.*;
-import io.clean.tdd.domain.concert.port.*;
+import io.clean.tdd.domain.payment.model.Payment;
+import io.clean.tdd.domain.payment.model.UserPoint;
+import io.clean.tdd.domain.concert.port.ConcertRepository;
+import io.clean.tdd.domain.payment.port.PaymentRepository;
+import io.clean.tdd.domain.payment.port.PointHistoryRepository;
+import io.clean.tdd.domain.access.port.ReservationAccessRepository;
+import io.clean.tdd.domain.concert.port.ReservationRepository;
+import io.clean.tdd.domain.concert.port.SeatRepository;
+import io.clean.tdd.domain.payment.port.UserPointRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;

@@ -2,6 +2,7 @@ package io.clean.tdd.infrastructure.concert;
 
 import io.clean.tdd.domain.concert.model.Seat;
 import io.clean.tdd.domain.concert.port.SeatRepository;
+import io.clean.tdd.infrastructure.concert.entity.SeatEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
