@@ -1,12 +1,10 @@
 package io.clean.tdd.controller.concert;
 
-import io.clean.tdd.controller.concert.annotation.CurrentReservationAccess;
-import io.clean.tdd.controller.concert.annotation.ReservationAccessCheck;
 import io.clean.tdd.controller.concert.request.PaymentRequest;
 import io.clean.tdd.controller.concert.request.ReservationRequest;
 import io.clean.tdd.domain.concert.*;
 import io.clean.tdd.domain.concert.model.Concert;
-import io.clean.tdd.domain.concert.model.Payment;
+import io.clean.tdd.domain.payment.model.Payment;
 import io.clean.tdd.domain.concert.model.Reservation;
 import io.clean.tdd.domain.concert.model.Seat;
 import lombok.RequiredArgsConstructor;
