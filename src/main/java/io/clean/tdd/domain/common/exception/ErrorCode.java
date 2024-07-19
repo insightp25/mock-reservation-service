@@ -1,0 +1,15 @@
+package io.clean.tdd.domain.common.exception;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum ErrorCode {
+    CONCERT_NOT_FOUND_ERROR("404", "해당 콘서트가 존재하지 않습니다"),
+    CONCERT_UNAVAILABLE_ERROR("409", "본 콘서트는 신청이 마감되었습니다"),
+    GENERAL_ERROR("500", "서버 오류가 발생했습니다");
+
+    private final String code;
+    private final String message;
+}
