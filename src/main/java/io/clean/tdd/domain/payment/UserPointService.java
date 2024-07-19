@@ -21,6 +21,10 @@ public class UserPointService {
         return userPointRepository.selectById(userId);
     }
 
+    public List<PointHistory> getHistoriesByUserId(long userId) {
+        return pointHistoryRepository.selectAllByUserId(userId);
+    }
+
     public UserPoint charge(long userId, long amount) {
         pointValidator.validatePointGreaterThanZero(amount);
 
