@@ -38,7 +38,6 @@ public class ConcertService {
         // 재고: seats의 상태도 함께 업데이트 되었는데, jpa에서 어떻게 처리하냐(1:N)에 따라 아래 seatRepository.update()가 중복이 될 수도
         Reservation resultReservation = reservationRepository.save(reservation.toHoldingStatus());
 
-
         resultReservation.seats().stream()
             .forEach(seatRepository::update);
 
@@ -49,7 +48,7 @@ public class ConcertService {
     public Payment proceedPayment(Payment payment) {
         // reservation
         // HOLDING -> EXPIRED
-        Reservation reservation = reservationRepository.getById(payment.reservationId());
+        Reservation reservation = reservationRepository.findById(payment.reservationId());
         Reservation updatedReservation = reservationRepository.update(reservation.toCompleteStatus());
 
         // seat

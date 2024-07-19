@@ -261,7 +261,7 @@ public class ConcertServiceTest {
             .updatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
             .build();
 
-        BDDMockito.given(reservationRepository.getById(anyLong()))
+        BDDMockito.given(reservationRepository.findById(anyLong()))
             .willReturn(reservation);
         BDDMockito.given(reservationRepository.update(any()))
             .willReturn(reservation.toCompleteStatus());
