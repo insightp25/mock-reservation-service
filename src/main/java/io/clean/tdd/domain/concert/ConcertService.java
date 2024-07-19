@@ -1,7 +1,18 @@
 package io.clean.tdd.domain.concert;
 
+import io.clean.tdd.domain.access.model.ReservationAccess;
 import io.clean.tdd.domain.concert.model.*;
-import io.clean.tdd.domain.concert.port.*;
+import io.clean.tdd.domain.payment.PointValidator;
+import io.clean.tdd.domain.payment.model.Payment;
+import io.clean.tdd.domain.payment.model.PointHistory;
+import io.clean.tdd.domain.payment.model.UserPoint;
+import io.clean.tdd.domain.concert.port.ConcertRepository;
+import io.clean.tdd.domain.payment.port.PaymentRepository;
+import io.clean.tdd.domain.payment.port.PointHistoryRepository;
+import io.clean.tdd.domain.access.port.ReservationAccessRepository;
+import io.clean.tdd.domain.concert.port.ReservationRepository;
+import io.clean.tdd.domain.concert.port.SeatRepository;
+import io.clean.tdd.domain.payment.port.UserPointRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,7 +79,8 @@ public class ConcertService {
         userPointRepository.insertOrUpdate(userPoint.rebalanceForUse(updatedReservation.calculatePrice()));
 
         // point history
-        pointHistoryRepository.insert(PointHistory.generatePointUseHistory(updatedReservation.userId(), updatedReservation.calculatePrice()));
+        pointHistoryRepository.insert(
+            PointHistory.generatePointUseHistory(updatedReservation.userId(), updatedReservation.calculatePrice()));
 
         // payment
         return paymentRepository.save(Payment.generatePayment(updatedReservation));

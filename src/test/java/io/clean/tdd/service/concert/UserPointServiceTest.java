@@ -1,12 +1,12 @@
 package io.clean.tdd.service.concert;
 
-import io.clean.tdd.domain.concert.PointValidator;
-import io.clean.tdd.domain.concert.UserPointService;
-import io.clean.tdd.domain.concert.model.PointHistory;
-import io.clean.tdd.domain.concert.model.TransactionType;
-import io.clean.tdd.domain.concert.model.UserPoint;
-import io.clean.tdd.domain.concert.port.PointHistoryRepository;
-import io.clean.tdd.domain.concert.port.UserPointRepository;
+import io.clean.tdd.domain.payment.PointValidator;
+import io.clean.tdd.domain.payment.UserPointService;
+import io.clean.tdd.domain.payment.model.PointHistory;
+import io.clean.tdd.domain.payment.model.TransactionType;
+import io.clean.tdd.domain.payment.model.UserPoint;
+import io.clean.tdd.domain.payment.port.PointHistoryRepository;
+import io.clean.tdd.domain.payment.port.UserPointRepository;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
