@@ -8,5 +8,5 @@ public interface ReservationRepository {
 
     Reservation update(Reservation reservation);
 
-    Reservation getById(long id);
+    Reservation findById(long id);
 }

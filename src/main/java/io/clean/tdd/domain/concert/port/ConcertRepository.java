@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ConcertRepository {
 
-    List<Concert> findByConcertDetailId(long id);
+    List<Concert> findByConcertDetailId(long concertDetailId);
 }
