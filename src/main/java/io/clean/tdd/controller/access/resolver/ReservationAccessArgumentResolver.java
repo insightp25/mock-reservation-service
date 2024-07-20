@@ -30,6 +30,6 @@ public class ReservationAccessArgumentResolver implements HandlerMethodArgumentR
         NativeWebRequest webRequest,
         WebDataBinderFactory binderFactory
     ) {
-        return reservationAccessSessionStorage.getSessionReservationAccessId();
+        return reservationAccessSessionStorage.getSessionReservationAccessTokenId();
     }
 }

@@ -24,4 +24,9 @@ public class ReservationAccessRepositoryImpl implements ReservationAccessReposit
 
         return reservationAccessJpaRepository.save(ReservationAccessEntity.from(reservationAccess, reservationAccessEntity.userEntity)).toModel();
     }
+
+    @Override
+    public ReservationAccess findByTokenId(String tokenId) {
+        return null;
+    }
 }
