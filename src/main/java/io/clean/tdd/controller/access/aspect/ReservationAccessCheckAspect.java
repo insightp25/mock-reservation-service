@@ -1,12 +1,15 @@
 package io.clean.tdd.controller.access.aspect;
 
 import io.clean.tdd.controller.access.session.ReservationAccessSessionStorage;
+import io.clean.tdd.domain.access.ReservationAccessService;
+import io.clean.tdd.domain.common.exception.CustomException;
+import io.clean.tdd.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.UUID;
 
 @Aspect
 @Component
@@ -15,14 +18,16 @@ public class ReservationAccessCheckAspect {
 
     private final ReservationAccessSessionStorage reservationAccessSessionStorage;
 
-    @Before("@annotation(io.clean.tdd.ReservationAccessCheck)")
-    public void checkEligibility() throws HttpClientErrorException { // to be finalized
+//    private final ReservationAccessService reservationAccessService;
 
-        String reservationAccessId = reservationAccessSessionStorage.getSessionReservationAccessId();
+    @Before("@annotation(io.clean.tdd.controller.access.annotation.ReservationAccessCheck)")
+    public void checkEligibility() {
 
-        // to be finalized
-        if (reservationAccessId == null) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
-        }
+        String reservationAccessTokenId = reservationAccessSessionStorage.getSessionReservationAccessTokenId();
+//
+//        if (reservationAccessTokenId == null) {
+//            reservationAccessSessionStorage.storeSession(UUID.randomUUID().toString());
+//            throw new CustomException(ErrorCode.ACCESS_TOKEN_NOT_FOUND);
+//        }
     }
 }

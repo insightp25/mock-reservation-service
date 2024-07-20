@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public record PaymentRequest(
+    @JsonProperty("user_id") long userId,
     @JsonProperty("due_amount") long dueAmount
 ) {
     @Builder

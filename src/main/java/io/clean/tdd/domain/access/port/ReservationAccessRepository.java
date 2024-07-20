@@ -7,4 +7,6 @@ public interface ReservationAccessRepository {
     ReservationAccess getByUserId(long userId);
 
     ReservationAccess update(ReservationAccess reservationAccess);
+
+    ReservationAccess findByTokenId(String tokenId);
 }
