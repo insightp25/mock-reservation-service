@@ -1,11 +1,11 @@
-package io.clean.tdd.controller.access.annotation;
+package io.clean.tdd.legacy.controller.access.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ReservationAccessCheck {
+public @interface CurrentReservationAccess {
 }

@@ -1,8 +1,8 @@
 package io.clean.tdd.controller.common;
 
-import io.clean.tdd.domain.common.exception.CustomException;
-import io.clean.tdd.domain.common.exception.ErrorCode;
-import io.clean.tdd.domain.common.exception.ErrorResponse;
+import io.clean.tdd.domain.common.CustomException;
+import io.clean.tdd.domain.common.ErrorCode;
+import io.clean.tdd.domain.common.ErrorResponse;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

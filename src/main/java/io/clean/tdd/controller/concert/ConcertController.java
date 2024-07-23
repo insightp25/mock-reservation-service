@@ -1,15 +1,15 @@
 package io.clean.tdd.controller.concert;
 
-import io.clean.tdd.controller.access.annotation.CurrentReservationAccess;
-import io.clean.tdd.controller.access.annotation.ReservationAccessCheck;
-import io.clean.tdd.controller.access.session.ReservationAccessSessionStorage;
+import io.clean.tdd.legacy.controller.access.annotation.CurrentReservationAccess;
+import io.clean.tdd.legacy.controller.access.annotation.ReservationAccessCheck;
+import io.clean.tdd.legacy.controller.access.session.ReservationAccessSessionStorage;
 import io.clean.tdd.controller.concert.request.PaymentRequest;
 import io.clean.tdd.controller.concert.request.ReservationRequest;
 import io.clean.tdd.controller.concert.request.SeatRequest;
 import io.clean.tdd.domain.access.ReservationAccessService;
 import io.clean.tdd.domain.access.model.ReservationAccess;
-import io.clean.tdd.domain.common.exception.CustomException;
-import io.clean.tdd.domain.common.exception.ErrorCode;
+import io.clean.tdd.domain.common.CustomException;
+import io.clean.tdd.domain.common.ErrorCode;
 import io.clean.tdd.domain.concert.*;
 import io.clean.tdd.domain.concert.model.Concert;
 import io.clean.tdd.domain.payment.model.Payment;

@@ -1,4 +1,4 @@
-package io.clean.tdd.controller.access.session;
+package io.clean.tdd.legacy.controller.access.session;
 
 public interface ReservationAccessSessionConstant {
 

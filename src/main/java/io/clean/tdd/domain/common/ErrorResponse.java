@@ -1,4 +1,4 @@
-package io.clean.tdd.domain.common.exception;
+package io.clean.tdd.domain.common;
 
 public record ErrorResponse(
     String code,

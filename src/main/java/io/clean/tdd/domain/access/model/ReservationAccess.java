@@ -1,7 +1,7 @@
 package io.clean.tdd.domain.access.model;
 
-import io.clean.tdd.domain.common.exception.CustomException;
-import io.clean.tdd.domain.common.exception.ErrorCode;
+import io.clean.tdd.domain.common.CustomException;
+import io.clean.tdd.domain.common.ErrorCode;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
